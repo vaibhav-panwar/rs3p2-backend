@@ -7,13 +7,13 @@ blogRoute.get("/blogs", userAuth, async (req, res) => {
     try {
         let searchQuery = {};
         let sortQuery = {};
-        if(req.query.title){
-            searchQuery.title = { $regex:req.query.title, $options:"i"}
+        if (req.query.title) {
+            searchQuery.title = { $regex: req.query.title, $options: "i" }
         }
-        if(req.query.category){
+        if (req.query.category) {
             searchQuery.category = req.query.category;
         }
-        if(req.query.sort){
+        if (req.query.sort) {
             sortQuery.date = req.query.sort;
         }
         let data = await BlogModel.find(searchQuery).sort(sortQuery);
@@ -57,10 +57,13 @@ blogRoute.patch("/blogs/:id", userAuth, async (req, res) => {
                 message: "blog updated successfully"
             })
         }
-        res.status(400).send({
-            isError: true,
-            error: "you are not authorised for this action"
-        })
+        else {
+            res.status(400).send({
+                isError: true,
+                error: "you are not authorised for this action"
+            })
+        }
+
 
     } catch (error) {
         res.status(400).send({
